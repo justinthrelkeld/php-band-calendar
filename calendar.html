@@ -1,35 +1,47 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 
-    <link href="css/styles.css" type="text/css" rel="stylesheet" />
+  <link href="css/styles.css" type="text/css" rel="stylesheet" />
 
-    <script src="js/jquery-1.9.1.js" type="text/javascript"></script>
-    <script src="js/jquery-ui-1.10.1.custom.js" type="text/javascript"></script>
+  <script src="js/jquery-1.9.1.js" type="text/javascript"></script>
+  <script src="js/jquery-ui-1.10.1.custom.js" type="text/javascript"></script>
 
-    <script src="js/jquery.smooth-scroll.min.js" type="text/javascript"></script>
-    
-
-    <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAvloktPgM55YJWxAggRuTFD_vO9HkllhY&sensor=true">
-    </script>
-
-    <script type="text/javascript" src="js/calendar.js"></script>
-  </head>
-
-  <body onload="initialize()">
+  <script src="js/jquery.smooth-scroll.min.js" type="text/javascript"></script>
 
 
-    <section id="eventcalendar">
-      <article>
-        <h3><a href="#" id="eventlink-ThisIsAnEvenKeyId">{{Event Title}}</a></h3>
-        <span>{{Date}}</span>
-        <span>{{time}}</span>
-      </article>
-    </section>
+  <script type="text/javascript"
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAvloktPgM55YJWxAggRuTFD_vO9HkllhY&sensor=true">
+  </script>
+
+  <script type="text/javascript" src="js/calendar.js"></script>
+</head>
+
+<body onload="initialize()">
+
+  <section id="eventcalendar">
+    <article class="event">
+      <h3><a href="#dosomething" onclick="showDetails(1)" class="eventlink" id="eventlink-0">Event Title 1</a></h3>
+      <span>{{Date}}</span>
+      <span>{{time}}</span>
+    </article>
+    <article class="event">
+      <h3><a href="#dosomething" class="eventlink" id="eventlink-1">Event Title 2</a></h3>
+      <span>{{Date}}</span>
+      <span>{{time}}</span>
+    </article>
+    <article class="event">
+      <h3><a href="#dosomething" class="eventlink" id="eventlink-2">Event Title 3</a></h3>
+      <span>{{Date}}</span>
+      <span>{{time}}</span>
+    </article>
+    <div style="width: 100%; height: 30em;" id="map_canvas"></div>
+  </section>
 
 
-  </body>
+
+
+</body>
 </html>

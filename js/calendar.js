@@ -1,103 +1,58 @@
 var map;
 
+var geocoder;
+
+geocoder = new google.maps.Geocoder();
+
+
 // need the following information
 // var events = [
-// [event ID, date, time, "address of event"]
-// [event ID, date, time, "address of event"]
-// [event ID, date, time, "address of event"]
+// [eventID, date, time, "address of event", "Event Short Description"]
+// [eventID, date, time, "address of event", "Event Short Description"]
+// [eventID, date, time, "address of event", "Event Short Description"]
 // ]
 
-      var points = [
-          [35.849, -86.362, 'Marker X', 'stop1'],
-          [35.846, -86.362, 'Marker Y', 'stop2'],
-          [35.852, -86.362, 'Marker Z', 'stop3'],
-          [35.852, -86.360, 'Marker A', 'stop4'],
-          [35.852, -86.355, 'Marker B', 'stop5'],
-          [35.852, -86.350, 'Marker C', 'stop6'],
-          [35.852, -86.347, 'Marker D', 'stop7']
-        ];
+var eventList = [
+[0, 'January 30th', '7 in the afternoon', '3920 Puckett Creek Xing, murfreesboro TN 37128', "event 1"],
+[1, 'January 30th', '7 in the afternoon', '23 march mill road, fayetteville TN', "event 1"],
+[2, 'January 30th', '7 in the afternoon', 'Corner of medical center and thompson lane, murfreesboro tn', "event 1"],
+[3, 'January 30th', '7 in the afternoon', 'JoZoara Coffee Shop, Murfreesboro TN', "event 1"],
+];
 
-      function initialize() {
-        console.log('initializing Google map');
+function initialize() {
+  console.log('initializing Google map');
 
-        var myLatlng = new google.maps.LatLng(35.849057,-86.362374);
+  var myLatlng = new google.maps.LatLng(35.849057,-86.362374);
 
-        var mapOptions = {
-          zoom: 15,
-          center: myLatlng,
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
-          mapTypeControl: false,
-          streetViewControl: false,
-        }
+  var mapOptions = {
+    zoom: 15,
+    center: myLatlng,
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    mapTypeControl: false,
+    streetViewControl: false,
+  }
 
-        map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
-
-        google.maps.event.addListener(map, 'click', function(e) {
-          openMapDrawer();
-          map.panTo(myLatlng);
-          map.setZoom(15);
-        })
-
-        // Add markers to the map from array points.
-        for (var i = 0; i < points.length; i++) {
-          var location = new google.maps.LatLng(points[i][0],points[i][1]);
-          var title = points[i][2];
-          var marker = new google.maps.Marker({
-            position: location,
-            title: title,
-            map: map
-          });
-          attachPoints(marker, i);
-        }
+  map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
 
 
-      $('#mapDrawer').waypoint(function() {
-        console.log('Top collided');
-      }, {offset: 1});
-
-      $('#mapDrawer').waypoint(function() {
-        console.log('bottom collided');
-      }, { 
-        offset: function() {
-          return -$(this).height();
-        }});
-
-      originalMapHeight = $('#mapDrawer').height(); 
-
-    };
-
-      function attachPoints(marker, number) {
-        var currentTourStop = points[number][3];
-        google.maps.event.addListener(marker, 'click', function() {
-          //goto point logic
-          console.log('going to ' + currentTourStop);
-          //window.location.assign('#' + currentTourStop);
-          $.smoothScroll({
-            scrollTarget: '#' + currentTourStop
-          });
+  function codeAddresses(address) {
+    alert(address);
+    geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        map.setCenter(results[0].geometry.location);
+        var marker = new google.maps.Marker({
+          map: map,
+          position: results[0].geometry.location
         });
-      };
-
-      function toggleMapDrawer() {
-        $('#mapDrawer').slideToggle(400);
-      }; 
-
-      function openMapDrawer() {
-        $.smoothScroll({
-            scrollTarget: '#mapDrawer'
-          });
-        $('#mapDrawer').toggleClass('open', 400);
-
-      };
-
-      function foldMapDrawer() {
-
-        $('#mapDrawer.open').height(originalMapHeight);
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
       }
+    });
 
-      function unfoldMapDrawer() {
-        $('#mapDrawer').effect('size', {
-          to: {height: $(window).height() },
-          scale: 'box'
-        }, 1000);
-      }
+
+
+  };
+      $('.eventlink').bind('click', function() {
+      alert($(this).ID());
+    });
+}
