@@ -53,6 +53,6 @@ function initialize() {
 
   };
       $('.eventlink').bind('click', function() {
-      alert($(this).ID());
+      alert(this.id);
     });
 }
