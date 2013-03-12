@@ -35,7 +35,7 @@ function initialize() {
   map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
 
 
-  function codeAddresses(address) {
+  function codeAddress(address) {
     alert(address);
     geocoder.geocode( { 'address': address}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
@@ -53,6 +53,12 @@ function initialize() {
 
   };
       $('.eventlink').bind('click', function() {
-      alert(this.id);
+      thisId = this.id
+      thisIndex = thisId.split('-')[1];
+      console.log('you want to know about ' + thisId);
+      console.log('it has an index of ' + thisIndex);
+
+      codeAddress(eventList[thisIndex][3]);
+
     });
 }
