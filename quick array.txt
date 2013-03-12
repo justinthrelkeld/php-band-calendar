@@ -2,3 +2,11 @@ array => (
   'id' => 'address',
   'id' => 'address'
 );
+
+
+// I need the following information into the JS
+// var events = [
+// [event ID, date, time, "address of event"]
+// [event ID, date, time, "address of event"]
+// [event ID, date, time, "address of event"]
+// ]
