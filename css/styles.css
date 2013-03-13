@@ -43,7 +43,7 @@ body > nav {
 }
 
 .event.enlarged{
-		position: absolute;
+	position: absolute;
 	top: 10em;
 	height: 15em;
 	background-color: #333;
@@ -52,8 +52,10 @@ body > nav {
 	padding: 0;
 	left:0;
 	z-index: 100;
-	padding: 2em;
+}
 
+.event.enlarged > * {
+	padding: 2em;
 }
 
 #escape{
