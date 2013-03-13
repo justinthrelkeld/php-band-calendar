@@ -22,26 +22,29 @@
 <body onload="initialize()">
 
   <section id="eventcalendar">
-    <article class="event">
+    <article class="event" id="event-0">
       <h3><a href="#dosomething" class="eventlink" id="eventlink-0">Event Title 1</a></h3>
       <span>{{Date}}</span>
       <span>{{time}}</span>
+      <address>{{address}}</address>
     </article>
-    <article class="event">
+    <article class="event" id="event-1">
       <h3><a href="#dosomething" class="eventlink" id="eventlink-1">Event Title 2</a></h3>
       <span>{{Date}}</span>
       <span>{{time}}</span>
+      <address>{{address}}</address>
     </article>
-    <article class="event">
-      <h3><a href="#dosomething" class="eventlink" id="eventlink-2">Event Title 3</a></h3>
-      <span>{{Date}}</span>
-      <span>{{time}}</span>
-    </article>
-    <div style="width: 100%; height: 30em;" id="map_canvas"></div>
-  </section>
+      <article class="event" id="event-2">
+        <h3><a href="#dosomething" class="eventlink" id="eventlink-2">Event Title 3</a></h3>
+        <span>{{Date}}</span>
+        <span>{{time}}</span>
+        <address>{{address}}</address>
+      </article>
+        <div id="map_canvas" class="hidden"></div>
+      </section>
 
 
 
 
-</body>
-</html>
+    </body>
+    </html>

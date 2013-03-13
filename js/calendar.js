@@ -21,6 +21,7 @@ var eventList = [ // this is a parsed JSON object
 }];
 
 function initialize() {
+  $('body').append('<div id="escape" class="hidden"></div>');
   console.log('initializing Google map');
 
   var myLatlng = new google.maps.LatLng(35.849057,-86.362374);
@@ -69,6 +70,13 @@ function initialize() {
     console.log('you want to know about ' + thisId);
     console.log('it has an index of ' + thisIndex);
     showEventDetails(eventList[thisIndex].address);
-
+    $('#map_canvas').addClass('show');
+    $('#event-' + thisIndex).addClass('enlarged');
+    $('#escape').removeClass('hidden');
+  });
+  $('#escape').bind('click', function() {
+    $('#map_canvas').removeClass('show');
+    $('#event-' + thisIndex).removeClass('enlarged');
+    $('#escape').addClass('hidden');
   });
 };
