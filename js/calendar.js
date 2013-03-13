@@ -1,16 +1,8 @@
 var map;
-
 var geocoder;
+var marker;
 
 geocoder = new google.maps.Geocoder();
-
-
-// need the following information
-// var events = [
-// [eventID, date, time, "address of event", "Event Short Description"]
-// [eventID, date, time, "address of event", "Event Short Description"]
-// [eventID, date, time, "address of event", "Event Short Description"]
-// ]
 
 var eventList = [
 [0, 'January 30th', '7 in the afternoon', '3920 Puckett Creek Xing, murfreesboro TN 37128', "event 1"],
@@ -30,35 +22,44 @@ function initialize() {
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     mapTypeControl: false,
     streetViewControl: false,
-  }
+  };
 
   map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
 
-
   function codeAddress(address) {
-    alert(address);
+    console.log('build a marker at ' + address);
     geocoder.geocode( { 'address': address}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
         map.setCenter(results[0].geometry.location);
-        var marker = new google.maps.Marker({
+        marker = new google.maps.Marker({
           map: map,
           position: results[0].geometry.location
         });
+        var infowindow = new google.maps.InfoWindow({
+          content: 
+            '<a target="_blank" href="https://www.google.com/maps?daddr=' + 
+            address + 
+            '">get directions to ' + 
+            address + 
+            '.</a>'
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+          infowindow.open(map,marker);
+        });
+
       } else {
-        alert('Geocode was not successful for the following reason: ' + status);
-      }
+        concole.log('Geocode was not successful for the following reason: ' + status);
+      };
     });
-
-
 
   };
-      $('.eventlink').bind('click', function() {
-      thisId = this.id
-      thisIndex = thisId.split('-')[1];
-      console.log('you want to know about ' + thisId);
-      console.log('it has an index of ' + thisIndex);
+  $('.eventlink').bind('click', function() {
+    thisId = this.id;
+    thisIndex = thisId.split('-')[1];
+    console.log('you want to know about ' + thisId);
+    console.log('it has an index of ' + thisIndex);
+    codeAddress(eventList[thisIndex][3]);
 
-      codeAddress(eventList[thisIndex][3]);
-
-    });
-}
+  });
+};
