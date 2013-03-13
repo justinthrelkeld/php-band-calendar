@@ -42,6 +42,8 @@ body > nav {
 	z-index: 100;
 }
 
+.event address {display: none;}
+
 .event.enlarged{
 	position: absolute;
 	top: 10em;
@@ -53,6 +55,8 @@ body > nav {
 	left:0;
 	z-index: 100;
 }
+
+.event.enlarged address{display: block;}
 
 .event.enlarged > * {
 	padding: 2em;
