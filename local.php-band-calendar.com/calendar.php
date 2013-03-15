@@ -15,9 +15,11 @@
 	<script type="text/javascript" src="js/calendar.js"></script>
 </head>
 <body onload="initialize()">
+	<section id="main">
 		<?php include ('include/header.php'); ?>
-	<section id="eventcalendar">
-		<?php include ('include/event_cal.php'); ?>
-	</section>
+		<section id="eventcalendar">
+			<?php include ('include/event_cal.php'); ?>
+		</section>
+	<section>
 </body>
 </html>

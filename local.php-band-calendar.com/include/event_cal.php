@@ -28,12 +28,19 @@ for ($i = 0; $i < $eventsCount; $i++) {
 //echo '<pre>';
 //print_r ($eventsList);
 //echo '</pre>';
+
 if (!empty($eventsList[0]['title'])) { ?>
 	<script type="text/javascript">
 		var eventsList = null;
 		var eventsList = JSON.parse('<?php echo json_encode($eventsList) ?>');
 		//alert(eventsList[0].time);
 	</script>
+	<div>
+		<header>
+			<h3>Events!</h3>
+		</header>
+		<div>
+			<section id="eventcalendarscroller">
 	<?php
 		for ($i = 0; $i < $eventsCount; $i++) {
 			echo '<article class="event" id="event-' . $i . '">'."\r\n";
@@ -50,4 +57,10 @@ if (!empty($eventsList[0]['title'])) { ?>
 	<?php 
 	};
 ?>
+		</section>
+	</div>
+	<footer>
+		<p>come to an event</p>
+	</footer>
+</div>
 <div id="map_canvas" class="hidden"></div>

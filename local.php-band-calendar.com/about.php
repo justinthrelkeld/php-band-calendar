@@ -1,6 +1,6 @@
 <?php
   define('allow', TRUE);
-  $title = "Contact us";
+  $title = "Who We Are";
 ?>
 
 <!DOCTYPE html>
@@ -19,11 +19,7 @@
 				<h1><?php echo $title ?><h1>
 			</header>
 			<section>
-				<p>This is the contact page, with contacts, Contact me!</p>
-				<ul>
-					<li>Phone: 123-123-4321</li>
-					<li>Email: no.spam@spam.com</li>
-					<li><address>I live here</address></li>
+				<p>We are <b>Not much to say here.</b></p>
 			</section>
 		</article>
 	</section>
