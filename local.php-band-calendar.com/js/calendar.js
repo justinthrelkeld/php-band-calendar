@@ -4,7 +4,7 @@ var marker;
 
 geocoder = new google.maps.Geocoder();
 
-var eventList = [ // this is a parsed JSON object
+var eventsList = [ // this is a sample parsed JSON object
 {
   "id":"0",
   "title":"band is here",
@@ -12,13 +12,7 @@ var eventList = [ // this is a parsed JSON object
   "address":"Grace Chapel Tullahoma 315 NW Atlantic St, TN, 37388, USA",
   "description":"description of band performance "
 },
-{
-  "id":"1",
-  "title":"asdkj",
-  "time":"123456789",
-  "address":"the corner of medical center and thompson lane",
-  "description":"algoiwg ckasadkaba ad"
-}];
+];
 
 function initialize() {
   $('body').append('<div id="escape" class="hidden"></div>');
@@ -69,7 +63,7 @@ function initialize() {
     thisIndex = thisId.split('-')[1];
     console.log('you want to know about ' + thisId);
     console.log('it has an index of ' + thisIndex);
-    showEventDetails(eventList[thisIndex].address);
+    showEventDetails(eventsList[thisIndex].address);
     $('#map_canvas').addClass('show');
     $('#event-' + thisIndex).addClass('enlarged');
     $('#escape').removeClass('hidden');
