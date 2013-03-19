@@ -6,7 +6,7 @@ V2 - update to grab address from within `<address>` tag. Stop using PHP to JSON 
 Separate JS from PHP. Make the event details viewer function regardless of how the calendar list is built on a page.
 Ideal structure:
 
-`
+```
   <someElement #eventList>
     <someElement class="event">
       <header>
@@ -20,4 +20,4 @@ Ideal structure:
       <p>Description</p>
     </someElement>
   </someElement>
-`
+```
