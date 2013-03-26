@@ -5,6 +5,7 @@ V1 - now
 V2 
 - update to grab address from within `<address>` tag. 
 - Stop using PHP to JSON hack.
+  - This would be accomplished by calling `$(thisEvent > address).text();` in jQuery. 
 - Separate JS from PHP. 
 - Make the event details viewer function regardless of how the calendar list is built on a page.
 
