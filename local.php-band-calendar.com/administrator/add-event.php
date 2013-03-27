@@ -4,7 +4,7 @@ session_start();
 define('__ROOT__', dirname(dirname(__FILE__)));
 require_once (__ROOT__ . '/administrator/auth.php');
 require_once (__ROOT__ . '/administrator/user.cookies.php');
-require_once (dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/wall/php-band-calendar.inc');
+require_once (__ROOT__ . '/config.php');
 
 // setup washer
 function clean($input) {
@@ -24,8 +24,7 @@ function sanitize($input) {
         if (get_magic_quotes_gpc()) {
             $input = stripslashes($input);
         }
-        $input  = clean($input);
-        $output = mysql_real_escape_string($input);
+        $output = clean($input);
     }
     return $output;
 }
@@ -45,48 +44,65 @@ function clientIP() {
 
 $errors = array();
 // $errors[] = "error!";
+
 // if post data was sent
 if (!empty($_POST['submit'])) {
 	$_POST = sanitize($_POST);
 
 	if (empty($_POST['dateF'])) {
-		$errors[] = "you must have a date for an event, don't you know?";
+		$errors[] = "You must have a date for an event, don't you know?";
 	}
 	if (empty($_POST['address'])) {
-		$errors[] = "you must have a location for an event, don't you know?";
+		$errors[] = "You must have a location for an event, don't you know?";
 	}
-	if (empty($_POST['title']) OR empty($_POST['description'])) {
-		$errors[] = "no title/description? how are they going to know what it is?";
+	if (empty($_POST['title'])) {
+		$errors[] = "No title? how are they going to know what it is?";
 	}
-	$time = strtotime(date('m/d/Y g:i:s a', strtotime($_POST['dateF'])));
-
-	// connect to database
+	print($_POST['dateF']);
+	try {
+		$time = DateTime::createFromFormat('Y-m-d\TH:i', $_POST['dateF']);
+		if (!is_object($time)) {
+			throw new Exception("Error formatting date");
+		}
+		$time = $time->format('U');
+	} catch (Exception $e) {
+		//$errors[] = $e->getMessage();
+		$errors[] = "Error formating date";
+	}
+	
+	// connect to database if no errors
 	if (!$errors) {
 		try {
-			$conn = new PDO('mysql:host='.$host.';dbname='.$dbname.'', $user, $password);
+			$conn = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME, DB_USER, DB_PASSWORD);
 			$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$statement = $conn->prepare("INSERT INTO `events` (
 				`id` ,
 				`title` ,
+				`name` ,
 				`time` ,
 				`timeAdded` ,
-				`address` ,
 				`description` ,
+				`address` ,
+				`lat` ,
+				`lng` ,
 				`managerID` ,
 				`managerIP`
 				)
-				VALUES (NULL, :title, :time, UNIX_TIMESTAMP(), :address, :description, :managerID, :managerIP);
-			");
-
+			VALUES (NULL, :title, :name, :time, UNIX_TIMESTAMP(), :description, :address, :lat, :lng, :managerID, :managerIP);");
+			
 			$statement->bindParam(':title', $_POST['title'], PDO::PARAM_STR);
+			$statement->bindParam(':name', $_POST['name'], PDO::PARAM_STR);
 			$statement->bindParam(':time', $time, PDO::PARAM_INT);
-			$statement->bindParam(':address', $_POST['address'], PDO::PARAM_STR);
 			$statement->bindParam(':description', $_POST['description'], PDO::PARAM_STR);
+			$statement->bindParam(':address', $_POST['address'], PDO::PARAM_STR);
+			$statement->bindParam(':lat', $_POST['lat'], PDO::PARAM_STR);
+			$statement->bindParam(':lng', $_POST['lng'], PDO::PARAM_STR);
 			$statement->bindParam(':managerID', $_SESSION["SESS_USERID"], PDO::PARAM_INT);
 			$statement->bindParam(':managerIP', clientIP(), PDO::PARAM_STR);
 
 			$statement->execute();
 			$errors[] = "Event Created!";
+			
 		} catch(PDOException $e) {
 			//$errors[] = 'Error: ' . $e->getMessage();
 			$errors[] = "error(0)";
@@ -94,19 +110,22 @@ if (!empty($_POST['submit'])) {
 	}
 } else {
 	//$errors[] = "no data was recevied";	
-}
-?>
+} ?>
 
 <!DOCTYPE html>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>PHP band calendar Login</title>
+	<title>add event</title>
+	<link type="text/css" rel="stylesheet" href="/administrator/css/style.css" media="all">
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+	<script src="/administrator/js/map.js"></script>
+	<link type="text/css" rel="stylesheet" href="/administrator/css/style.css" media="all">
 </head>
 <body>
 	<div id="holder">
 		<div id="logo">
-			<a href="/" title="Go Home">PHP band calendar</a>
+			<a href="/" title="Go to root">PHP band calendar</a>
 		</div>
 		<h1>Add event</h1>
 		<form id="login" action="#" method="post">
@@ -122,17 +141,25 @@ if (!empty($_POST['submit'])) {
 					</li>
 					<li>
 						<label for="dateF">Date: </label>
-						<input type="text" name="dateF" class="hasDatepicker" value="" required=""/>
-						<p>Current example: <?php echo date('m/d/Y g:i a', time()) ?></p>
+					    <input type="datetime-local" name="dateF" />
 					</li>
 					<li>
 						<label for="address">Address: </label>
-						<input type="text" name="address" value="" x-webkit-speech="" autocorrect="off" required=""/>
-						<p>Example: just like any other address :)</p>
+						<input id="address" class="collapsible" type="text" name="address" value="Nashvile, TN" x-webkit-speech="" autocorrect="off"/>
+						<!-- Using input text fields styled like buttons so map does not close when clicked. I think it is pretty clever :) -->
+						<input class="button" type="text" value="Geocode" onclick="codeAddress()" readonly=""/>
+						<input class="button" type="text" value="Remove overlay" onclick="deleteOverlays()" readonly=""/>
+						<div>
+							<div id="map-canvas" style="width: 500px; height: 300px"></div>
+							<input name="lat" type="text" value="" />
+							<input name="lng" type="text" value="" />
+						</div>
+
+						<p>Example: just like any other address. If you type the address press Geocode before adding. You can use the Geocode to locate an area of the map then if needed you may drag the marker to the exact location.</p>
 					</li>
 					<li>
 						<label for="description">Description: </label>
-						<input type="text" name="description" value="" required=""/>
+						<input type="text" name="description" value=""/>
 						<p>Do we even need this?</p>
 				</ul>
 			</fieldset>
@@ -145,7 +172,7 @@ if (!empty($_POST['submit'])) {
 					}
 				?>
 			</p>
-			<input id="submit" name="submit" type="submit" value="Add" />
+			<input class="button_submit" id="submit" name="submit" type="submit" value="Add" />
 		</form>
 	</div>
 </body>

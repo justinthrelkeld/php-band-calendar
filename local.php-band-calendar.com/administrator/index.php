@@ -1,15 +1,15 @@
 <?php session_start();
+define('__ROOT__', dirname(dirname(__FILE__)));
 if(isset($_SESSION['SESS_USERNAME'])) {
-		header("location: /administrator/home.php");
+		returnheader("/administrator/home.php");
 	}
 //redirect function
 function returnheader($location) {
 	$returnheader = header("location: $location");
 	return $returnheader;
 }
-require_once (dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/wall/php-band-calendar.inc');
-$connection = mysql_connect($host, $user, $password) OR die('Hello, we have an error (1).');
-$db_select = mysql_select_db($dbname, $connection) OR die('Hello, we have an error (2).');
+
+require_once (__ROOT__ . '/config.php');
 
 $errors = array();
 
@@ -29,23 +29,24 @@ if (isset($_POST["iebugaround"])) {
 	}
 	if (!$errors) {
 		//encrypt the password
-		$salt = substr( $passw, 0, 2 );
-		$passw = sha1($passw);
-		$passw = crypt($passw, $salt);
-		$pepper = "%AqZ38aK9a#";
-		$passencrypt = $salt . $passw . $pepper;
+		$salt = strrev(substr($uname, 0, 2 ));
+	        $passw = sha1($passw);
+	        $passw = crypt($passw, $salt);
+	        $pepper = "%AqZ38aK9a#";
+	        $passencrypt = $passw . $pepper;
 
 		//find out if user and password are present
 		try {
-			$conn = new PDO('mysql:host='.$host.';dbname='.$dbname.'', $user, $password);
+			$conn = new PDO('mysql:host='.DB_HOST.'; dbname='.DB_NAME, DB_USER, DB_PASSWORD);
 			$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$statement = $conn->prepare("SELECT `id`, `username`, `password` FROM managers WHERE username = :uname AND password = :passencrypt");
 
-			$statement->bindParam(':uname', mysql_real_escape_string($uname), PDO::PARAM_STR);
-			$statement->bindParam(':passencrypt', mysql_real_escape_string($passencrypt), PDO::PARAM_STR);
+			$statement->bindParam(':uname', $uname, PDO::PARAM_STR);
+			$statement->bindParam(':passencrypt', $passencrypt, PDO::PARAM_STR);
 			
 			$statement->execute();
-			if ($statement > 0) {
+			$total = $statement->rowCount();
+			if ($total > 0) {
 				while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
 					$idsess = stripslashes($row["id"]);
 					$username = stripslashes($row["username"]);
@@ -59,16 +60,15 @@ if (isset($_POST["iebugaround"])) {
 					//success, login to page
 					returnheader("/administrator/home.php");
 				}
-			} else {
-				//tell there is no username etc
+			} else{
+				// Wait 3 seconds to slow down brute force attack
 				sleep(3);
-				$errors[] = "Your username or password are incorrect";
+				$errors[] = "Username or Password are Incorrect";
 			}
-			$errors[] = "Event Created!";
 		} catch(PDOException $e) {
 			//$errors[] = 'Error: ' . $e->getMessage();
 			$errors[] = "error(0)";
-		}
+		} 
 	}
 } else {
 	$uname = "";
@@ -78,14 +78,13 @@ if (isset($_POST["iebugaround"])) {
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="/styles/form.css" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>PHP band calendar Login</title>
 </head>
 <body>
 	<div id="holder">
 		<div id="logo">
-			<a href="/" title="Go Home">PHP band calendar</a>
+			<a href="/index.php" title="Go Home">PHP band calendar</a>
 		</div>
 		<h1>Login Area</h1>
 		<form id="login" action="#" method="post">
@@ -96,11 +95,11 @@ if (isset($_POST["iebugaround"])) {
 				<ul>
 					<li>
 						<input name="iebugaround" type="hidden" value="1">
-						<input id="text" name="username" placeholder="Your Username" title="Your Username" type="text" value="<?php $uname;?>" required="">
+						<input id="text" name="username" placeholder="Your Username" title="Your Username" type="text" value="<?php $uname;?>" required="" />
 						<label for="username">Username</label>
 					</li>
 					<li>
-						<input id="password" name="password" placeholder="Your Password" title="Your Password" type="password" value="" required="">
+						<input id="password" name="password" placeholder="Your Password" title="Your Password" type="password" value="" required="" />
 						<label for="password">Password</label>
 					</li>
 				</ul>

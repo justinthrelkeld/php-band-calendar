@@ -19,7 +19,7 @@ $username = $_SESSION["SESS_USERNAME"];
 			<a href="/" title="Go Home">dev-ical</a>
 		</div>
 		<h1>Welcome <?php echo $username; ?></h1>
-		<span><a href="./logout.php">Logout</a></span>
+		<span><a href="/administrator/logout.php">Logout</a></span>
 		</header>
 			<ul id="menu">
 				<li>

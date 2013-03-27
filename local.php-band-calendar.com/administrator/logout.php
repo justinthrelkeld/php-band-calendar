@@ -12,5 +12,5 @@ $username = "";
 session_destroy();
 
 //redirect
-returnheader("index.php");
+returnheader("/administrator/index.php");
 ?>

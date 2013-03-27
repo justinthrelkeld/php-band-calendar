@@ -1,28 +1,24 @@
-<?php
-  define('allow', TRUE);
-  $title = "Who We Are";
+<?php define('allow', TRUE);
+$title = "About";
 ?>
-
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-	<link href="css/styles.css" type="text/css" rel="stylesheet" />
-	<title><?php echo $title ?></title>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<title>About</title>
+	<link href="css/style.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
 <body>
-<section id="main">
-	<?php include("include/header.php") ?>
-	<section>
-		<article>
+	<section id="container">
+		<?php include("include/header.php") ?>
+		<section>
 			<header>
-				<h1><?php echo $title ?><h1>
+				<h1><?php echo $title ?></h1>
 			</header>
-			<section>
-				<p>We are <b>Not much to say here.</b></p>
-			</section>
-		</article>
+			<p>This is the Band Calendar example website I think this 
+				page was a random thing to do :)</p>
+		</section>
 	</section>
-</section>
 </body>
 </html>

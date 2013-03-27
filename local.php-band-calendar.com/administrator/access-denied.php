@@ -8,7 +8,7 @@
 <h1>Access Denied</h1>
 <p align="center">&nbsp;</p>
 <h4 align="center" class="err">Access Denied!<br />
-	You do not have access to this resource. Click <a href="http://local.php-band-calendar.com/administrator/index.php">here to login</a>
+	You do not have access to this resource. Click <a href="http://69.73.170.65/%7ecollinba/administrator/index.php">here to login</a>
 </h4>
 </body>
 </html>
