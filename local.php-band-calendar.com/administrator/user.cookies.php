@@ -9,6 +9,6 @@ function returnheader($location) {
 if (!strlen($_SESSION["SESS_USERNAME"]) > 0) {
 
 	//redirect
-	returnheader("http://69.73.170.65/%7ecollinba/administrator/index.php");
+	returnheader("/administrator/index.php");
 }
 ?>
