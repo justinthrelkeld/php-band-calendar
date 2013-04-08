@@ -65,5 +65,4 @@ var eventsList = JSON.parse('<?php echo json_encode($eventsList) ?>');
 <footer>
 	<p>come to an event</p>
 </footer>
-<div id="mapBox" class="triangle-border top hidden"></div>
 <div id="map_canvas" class="hidden"></div>
