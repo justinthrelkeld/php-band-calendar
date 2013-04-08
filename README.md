@@ -80,7 +80,6 @@ In the future, we hope for it not to rely on a json object. The HTML would be pa
 		<footer>
 			<p>come to an event</p>
 		</footer>
-		<div id="mapBox" class="triangle-border top hidden"></div>
 		<div id="map_canvas" class="hidden"></div>
 	</div>
 
