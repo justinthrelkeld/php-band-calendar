@@ -128,6 +128,15 @@ if (!empty($_POST['submit'])) {
 			<a href="/" title="Go to root">PHP band calendar</a>
 		</div>
 		<h1>Add event</h1>
+		<?php
+			function is_chrome() {
+				return(stristr($_SERVER['HTTP_USER_AGENT'],"chrome"));
+			}
+
+			if(!is_chrome()) {
+				echo '<h2 id="getchrome"><a href="https://www.google.com/intl/en/chrome/browser/" target="_blank">Get Chrome</a> Firefox is still working/waiting <font style="font-size: 0.6em;font-weight: normal;">Just cuz of the event date &amp; time picker</font></h2>';
+			}
+		?>
 		<form id="login" action="#" method="post">
 			<fieldset>
 				<legend>
@@ -136,7 +145,7 @@ if (!empty($_POST['submit'])) {
 				<ul>
 					<li>
 						<label for="title">Title: </label>
-						<input type="text" name="title" value="" required=""/>
+						<input type="text" name="title" value="" required="" />
 						<p>Example: I don't really know :(</p>
 					</li>
 					<li>
@@ -145,21 +154,21 @@ if (!empty($_POST['submit'])) {
 					</li>
 					<li>
 						<label for="address">Address: </label>
-						<input id="address" class="collapsible" type="text" name="address" value="Nashvile, TN" x-webkit-speech="" autocorrect="off"/>
+						<input id="address" class="toggle" type="text" name="address" value="Nashville, TN" x-webkit-speech="" autocorrect="off" />
 						<!-- Using input text fields styled like buttons so map does not close when clicked. I think it is pretty clever :) -->
-						<input class="button" type="text" value="Geocode" onclick="codeAddress()" readonly=""/>
-						<input class="button" type="text" value="Remove overlay" onclick="deleteOverlays()" readonly=""/>
-						<div>
+						<input class="button" type="text" value="Geocode" onclick="codeAddress()" readonly="" />
+						<input class="button" type="text" value="Rev-Geocode" onclick="revGeocode()" readonly="" />
+						<input class="button" type="text" value="Remove overlay" onclick="deleteOverlays()" readonly="" /><br />
+						<input id="lat" name="lat" type="text" value="" />
+						<input id="lng" name="lng" type="text" value="" /><span>&lt;-- These could be hidden</span>
+						<div class="collapsible">
 							<div id="map-canvas" style="width: 500px; height: 300px"></div>
-							<input name="lat" type="text" value="" />
-							<input name="lng" type="text" value="" />
 						</div>
-
-						<p>Example: just like any other address. If you type the address press Geocode before adding. You can use the Geocode to locate an area of the map then if needed you may drag the marker to the exact location.</p>
+						<p>Just like any other address. If you type the address press Geocode before adding. You can use the Geocode to locate an area of the map then if needed you may drag the marker to the exact location. Reverse Geocode gets the address from lat lng from marker position. shue, if in chrome you can even speak! haha</p>
 					</li>
 					<li>
 						<label for="description">Description: </label>
-						<input type="text" name="description" value=""/>
+						<input type="text" name="description" value="" />
 						<p>Do we even need this?</p>
 				</ul>
 			</fieldset>

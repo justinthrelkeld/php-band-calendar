@@ -1,4 +1,4 @@
-.collapsible ~ div {
+.toggle ~ .collapsible {
 	overflow: hidden;
 	max-height: 0;
 	transition: max-height 0.3s;
@@ -10,7 +10,7 @@
 	-o-transition: max-height 0.3s; /* Opera */
 	-o-transition-timing-function: ease-in;
 }
-.collapsible:focus ~ div, .button:focus ~ div {
+.toggle:focus ~ .collapsible, input:focus ~ .collapsible {
 	max-height: 400px;
 }
 #map {
